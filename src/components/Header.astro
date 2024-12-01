@@ -1,0 +1,43 @@
+---
+import ToggleNavbar from "./ToggleNavbar.astro";
+---
+
+<header
+  class="w-full py-4 flex items-center justify-around bg-background-header/20 shadow-sm fixed top-0 left-0 right-0 backdrop-blur-sm z-20"
+>
+  <a href="/" aria-label="Ir a la página principal">
+    <img
+      src="/logotipo.png"
+      alt="Logotipo de Historias de Fútbol"
+      class="w-28 hover:scale-105 duration-200 transition-all"
+    />
+  </a>
+  <ToggleNavbar />
+  <nav class="hidden sm:block" aria-label="Menú de navegación">
+    <ul
+      class="flex items-center justify-center text-white font-medium text-xl gap-10"
+    >
+      <li>
+        <a
+          href="/"
+          class="header-footer-options"
+          title="Ir a la sección de Historias">Inicio</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="header-footer-options"
+          title="Ir a la sección de Historias">Historias</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="header-footer-options"
+          title="Ir a la sección de Noticias">Noticias</a
+        >
+      </li>
+    </ul>
+  </nav>
+</header>

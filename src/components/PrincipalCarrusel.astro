@@ -1,0 +1,152 @@
+---
+import { MaterialSymbolsArrowForwardIosRounded } from "src/assets";
+import type { NewsI } from "src/interfaces/news/newsInterface";
+
+interface Props {
+  notes: NewsI[];
+}
+
+const { notes } = Astro.props;
+---
+
+<section class="relative" aria-labelledby="carousel-title">
+  <h2 id="carousel-title" class="sr-only">Noticias destacadas</h2>
+  <div class="relative overflow-hidden flex items-center" data-notes={JSON.stringify(notes)}>
+    <div id="carouselSlides" class="flex transition-transform duration-500">
+      {
+        notes.map((note, i) => (
+          <figure class="relative min-w-full overflow-hidden">
+            <img
+              src={note.images.find((img) => img.mainImage)?.url || ""}
+              alt={`Imagen destacada de ${note.title}`}
+              class="w-full h-screen object-cover"
+            />
+            <figcaption class="absolute inset-0 flex flex-col justify-center items-center gap-4 text-text bg-black/60">
+              <div class="flex items-center justify-between px-4 md:px-10 gap-3 w-full">
+                <!-- Botón anterior -->
+                <button
+                  id="prevSlide"
+                  class="prevSlide rounded-full text-center border p-3 text-2xl rotate-180 transition-all duration-200 hover:bg-primary-5 hover:text-primary-15"
+                  aria-label="Mostrar imagen anterior"
+                >
+                  <MaterialSymbolsArrowForwardIosRounded />
+                </button>
+
+                <h3 class="text-center text-3xl sm:text-4xl md:text-5xl lg:text-7xl md:w-3/5 montserrat-alternates-extrabold text-shadow">
+                  {note.title}
+                </h3>
+
+                <!-- Botón siguiente -->
+                <button
+                  id="nextSlide"
+                  class="nextSlide rounded-full text-center border p-3 text-2xl transition-all duration-200 hover:bg-primary-5 hover:text-primary-15"
+                  aria-label="Mostrar imagen siguiente"
+                >
+                  <MaterialSymbolsArrowForwardIosRounded />
+                </button>
+              </div>
+
+              <a
+                href={note.isStory ? `/historias/${note.id}` : `/noticias/${note.id}`}
+                class="bg-primary-5 text-primary-15 hover:bg-primary-15 hover:text-primary-5 p-3 rounded-md montserrat-alternates-medium transition-all duration-300 ease-out text-xl"
+                aria-label="Ver historia completa de Universitario Bicampeón"
+              >
+                Ver {note.isStory ? "historia" : "noticia"}
+              </a>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Indicadores -->
+  <div class="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2">
+    {
+      notes.map((_, index) => (
+        <button
+          class={`w-3 h-3 rounded-full ${
+            index === 0 ? "bg-white" : "bg-gray-500"
+          }`}
+          aria-label={`Ir al slide ${index + 1}`}
+          id={`indicator-${index}`}
+        />
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .text-shadow {
+    text-shadow:
+      1px 1px 0px #000,
+      /* sombra para la letra superior izquierda */ -1px -1px 0px #000,
+      /* sombra para la letra inferior derecha */ 1px -1px 0px #000,
+      /* sombra para la letra superior derecha */ -1px 1px 0px #000; /* sombra para la letra inferior izquierda */
+  }
+</style>
+
+<script>
+  const notesData = document.querySelector('[data-notes]');
+
+  if (notesData) {
+    const notes = JSON.parse(notesData.getAttribute('data-notes') || '[]'); // Usar un valor por defecto si no se encuentra el atributo
+    let activeIndex = 0;  // Índice de la imagen activa
+
+    // Función para cambiar la imagen del carrusel
+    function changeSlide(direction:number) {
+      activeIndex = (activeIndex + direction + notes.length) % notes.length;
+      updateCarousel();
+    }
+
+    // Función para ir a una imagen específica
+    function goToSlide(index:number) {
+      activeIndex = index;
+      updateCarousel();
+    }
+
+    // Actualiza la posición del carrusel y los indicadores
+    function updateCarousel() {
+      const carouselSlides = document.getElementById('carouselSlides');
+      if (carouselSlides) {
+        carouselSlides.style.transform = `translateX(-${activeIndex * 100}%)`;
+      }
+      updateIndicators();
+    }
+
+    // Actualiza los indicadores para reflejar la imagen activa
+    function updateIndicators() {
+      const indicators = document.querySelectorAll('[id^="indicator-"]');
+      indicators.forEach((indicator, index) => {
+        indicator.classList.toggle('bg-white', index === activeIndex);
+        indicator.classList.toggle('bg-gray-500', index !== activeIndex);
+      });
+    }
+
+    // Establecer la función de cambio automático de imagen cada 8 segundos
+    setInterval(() => {
+      changeSlide(1);  // Cambiar al siguiente slide
+    }, 5000);  // 8000 milisegundos = 8 segundos
+
+    // Asignar los eventos a los botones de la flecha
+    const prevButtons = document.querySelectorAll('.prevSlide');
+    const nextButtons = document.querySelectorAll('.nextSlide');
+
+    prevButtons.forEach((prevButton) => {
+      prevButton.addEventListener('click', () => changeSlide(-1));  // Botón anterior
+    });
+
+    nextButtons.forEach((nextButton) => {
+      nextButton.addEventListener('click', () => changeSlide(1));  // Botón siguiente
+    });
+
+    // Asignar los eventos a los indicadores
+    const indicators = document.querySelectorAll('[id^="indicator-"]');
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', () => goToSlide(index));  // Ir a un slide específico
+    });
+
+  } else {
+    console.error('No se encontró el contenedor con el atributo data-notes.');
+  }
+</script>

@@ -1,0 +1,46 @@
+---
+import type { NewsI } from "src/interfaces/news/newsInterface";
+import formatFirebaseTimestamp from "src/utils/formatFirebaseTimestamp";
+
+interface Props {
+  note: NewsI;
+}
+
+const { note } = Astro.props;
+// Encuentra el tag que coincide con el principalTag
+const principalTag = note.tags.find((tag) => tag.id === note.principalTag);
+---
+
+<div
+  class="relative flex flex-col gap-2 w-[300px] hover:scale-105 transition-all duration-200 ease-in-out"
+>
+  <div class="absolute top-0 left-0 w-full">
+    <div class="flex items-center justify-between p-5">
+      <div
+        class={`${note.isPeruvian ? "bg-red-600" : "bg-blue-600"}  text-text montserrat-alternates-semibold rounded-full text-sm py-1 px-4`}
+      >
+        {note.isPeruvian ? "Perú" : "Int."}
+      </div>
+      <img
+        src={principalTag ? principalTag.image : null}
+        alt={`Logo o escudo oficial de ${principalTag ? principalTag.name : null}`}
+        class="size-16 object-contain"
+      />
+    </div>
+  </div>
+  <img
+    src={note.images.find((img) => img.mainImage)?.url || ""}
+    alt={`Imagen destacada de ${note.title}`}
+    class="size-[300px] object-cover rounded-sm"
+  />
+  <div class="flex flex-col gap-1">
+    <p class="text-sm text-red-500 max-w-56 montserrat-light">
+      {
+        note.updatedAt
+          ? formatFirebaseTimestamp(note.updatedAt)
+          : formatFirebaseTimestamp(note.createdAt)
+      }
+    </p>
+    <p class="max-w-[280px] text-xl montserrat-semibold">{note.title}</p>
+  </div>
+</div>

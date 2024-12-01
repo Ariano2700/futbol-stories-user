@@ -1,0 +1,108 @@
+---
+import { HumbleiconsBars, LineMdClose } from "src/assets";
+---
+
+<nav aria-label="Navegación principal" class="flex sm:hidden relative">
+  <!-- Botón para abrir el menú -->
+  <button
+    id="menuIcon"
+    class="text-4xl text-text block"
+    aria-controls="navMenu"
+    aria-expanded="false"
+    aria-label="Abrir menú de navegación"
+  >
+    <HumbleiconsBars />
+  </button>
+
+  <!-- Botón para cerrar el menú -->
+  <button
+    id="closeIcon"
+    class="hidden text-text text-3xl min-w-[36px]"
+    aria-controls="navMenu"
+    aria-expanded="true"
+    aria-label="Cerrar menú de navegación"
+  >
+    <LineMdClose />
+  </button>
+
+  <!-- Menú de navegación -->
+  <div
+    id="navMenu"
+    class="z-10 gap-3 bg-white rounded-lg shadow-xl absolute -left-[80px] top-11 py-3 px-5 flex-col items-center justify-center text-primary-10 hidden"
+    role="menu"
+    aria-hidden="true"
+  >
+    <!-- Flecha decorativa -->
+    <div
+      class="absolute right-2 -top-2 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-white"
+    >
+    </div>
+
+    <!-- Lista de enlaces -->
+    <ul
+      class="flex flex-col gap-5 items-center justify-center text-lg text-nowrap"
+    >
+      <li>
+        <a
+          href="/"
+          class="header-footer-options text-black"
+          title="Ir a la sección de Historias">Inicio</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="header-footer-options text-black"
+          title="Ir a la sección de Historias">Historias</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="header-footer-options text-black"
+          title="Ir a la sección de Noticias">Noticias</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  let open = false;
+
+  function toggleMenu() {
+    open = !open;
+    const navMenu = document.querySelector("#navMenu");
+    const menuIcon = document.querySelector("#menuIcon");
+    const closeIcon = document.querySelector("#closeIcon");
+
+    if (open) {
+      menuIcon?.setAttribute("aria-expanded", "true");
+      closeIcon?.setAttribute("aria-expanded", "true");
+      navMenu?.setAttribute("aria-hidden", "false");
+
+      menuIcon?.classList.add("hidden");
+      menuIcon?.classList.remove("block");
+      closeIcon?.classList.remove("hidden");
+      closeIcon?.classList.add("block");
+      navMenu?.classList.add("flex");
+      navMenu?.classList.remove("hidden");
+    } else {
+      menuIcon?.setAttribute("aria-expanded", "false");
+      closeIcon?.setAttribute("aria-expanded", "false");
+      navMenu?.setAttribute("aria-hidden", "true");
+
+      menuIcon?.classList.remove("hidden");
+      menuIcon?.classList.add("block");
+      closeIcon?.classList.add("hidden");
+      closeIcon?.classList.remove("block");
+      navMenu?.classList.remove("flex");
+      navMenu?.classList.add("hidden");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelector("#menuIcon")?.addEventListener("click", toggleMenu);
+    document.querySelector("#closeIcon")?.addEventListener("click", toggleMenu);
+  });
+</script>

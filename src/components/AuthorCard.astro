@@ -1,0 +1,113 @@
+---
+import {
+  MageX,
+  MdiFacebook,
+  MdiInstagram,
+  MdiLinkedin,
+  BitcoinIconsShareFilled,
+  MageTiktok,
+} from "src/assets";
+import type { UserI } from "src/interfaces/user/userInterface";
+import formatName from "src/utils/formatName";
+interface Props {
+  author: UserI;
+}
+const { author } = Astro.props;
+---
+
+<section class="w-full flex flex-col gap-5" aria-labelledby="author-title">
+  <!-- Título principal -->
+  <div>
+    <h3 id="author-title" class="montserrat-semibold uppercase">
+      Conoce más sobre el autor
+    </h3>
+    <hr class="border border-black" />
+  </div>
+
+  <!-- Información del autor -->
+  <div
+    class="flex flex-col items-center gap-7 md:flex-row md:items-start justify-start"
+  >
+    <!-- Imagen del autor -->
+    <img
+      src={author.photoProfile}
+      alt={`Imagen de perfil de ${formatName(author.name, author.surname)}`}
+      class="rounded-full size-24"
+    />
+
+    <!-- Texto descriptivo -->
+    <div class="flex flex-col gap-5 max-w-[550px]">
+      <div class="flex flex-col gap-3">
+        <h4 class="montserrat-semibold text-xl">
+          {formatName(author.name, author.surname)} |
+          <span class="montserrat-regular">
+            {author.profession}
+          </span>
+        </h4>
+        <p class="montserrat-regular text-lg">
+          {author.description}
+        </p>
+      </div>
+
+      <!-- Redes sociales -->
+      <div>
+        <h4 class="montserrat-semibold text-2xl">Redes</h4>
+        <div class="flex gap-5 text-text text-3xl">
+          {
+            author.networks.map((networkItem) => {
+              const { network, url } = networkItem;
+
+              // Asignar clases e íconos dinámicamente según la red
+              const networkConfig = {
+                twitter: {
+                  bgColor: "bg-black",
+                  icon: <MageX />,
+                  label: "Perfil de Twitter",
+                },
+                instagram: {
+                  bgColor: "bg-[#DA2F69]",
+                  icon: <MdiInstagram />,
+                  label: "Perfil de Instagram",
+                },
+                facebook: {
+                  bgColor: "bg-[#21589B]",
+                  icon: <MdiFacebook />,
+                  label: "Perfil de Facebook",
+                },
+                linkedin: {
+                  bgColor: "bg-[#0E76A8]",
+                  icon: <MdiLinkedin />,
+                  label: "Perfil de LinkedIn",
+                },
+                tiktok: {
+                  bgColor: "bg-black",
+                  icon: <MageTiktok />,
+                  label: "Perfil de TikTok",
+                },
+                other: {
+                  bgColor: "bg-gray-500",
+                  icon: <BitcoinIconsShareFilled />,
+                  label: "Otro perfil",
+                },
+              };
+
+              const config = networkConfig[network];
+
+              return (
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class={`rounded-full flex items-center justify-center ${config.bgColor} p-2 transition-all duration-200 ease-in-out hover:scale-105`}
+                  aria-label={`${config.label} de ${author.name} ${author.surname}`}
+                >
+                  {config.icon}
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

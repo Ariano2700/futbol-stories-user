@@ -1,0 +1,23 @@
+---
+import SectionNotesLayout from "src/layouts/SectionNotesLayout.astro";
+//import CardNoteSkeletor from "./CardNoteSkeletor.astro";
+import type { NewsI } from "src/interfaces/news/newsInterface";
+import CardNote from "./CardNote.astro";
+interface Props {
+  title: string;
+  notes: NewsI[];
+}
+
+const { title, notes } = Astro.props;
+---
+
+<SectionNotesLayout>
+  <h3 class="montserrat-alternates-semibold text-3xl">
+    {title} de <span class="text-primary-20">fut</span>bol
+  </h3>
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 xl: 2xl:grid-cols-3 gap-8 place-items-center md:place-items-start"
+  >
+    {notes.map((note, i) => <CardNote note={note} />)}
+  </div>
+</SectionNotesLayout>

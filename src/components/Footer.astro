@@ -1,0 +1,147 @@
+---
+import { MageX, MdiFacebook, MdiInstagram } from "src/assets";
+---
+
+<footer
+  class="bg-background-footer/50 py-2 flex flex-col items-center justify-center text-text"
+  aria-label="Pie de página de Historias de Fútbol"
+>
+  <!-- Sección principal del footer -->
+  <section
+    class="p-4 flex flex-col xl:flex-row items-center justify-around gap-5 w-full"
+  >
+    <!-- Logotipo -->
+    <a href="/" aria-label="Ir a la página principal de Historias de Fútbol">
+      <img
+        src="/logotipo.png"
+        alt="Logotipo de Historias de Fútbol"
+        class="w-48 hover:scale-105 duration-200 transition-all"
+      />
+    </a>
+
+    <!-- Navegación del footer -->
+    <nav
+      class="flex flex-col gap-5 sm:grid sm:grid-cols-3 sm:gap-8 sm:place-content-center md:flex md:flex-row md:gap-8 md:items-start w-4/5 xl:w-1/2"
+      aria-label="Menú de navegación en el pie de página"
+    >
+      <!-- Menú de categorías -->
+      <section class="sectionOptions" aria-labelledby="menu-categorias">
+        <h2 id="menu-categorias" class="underline text-2xl">Menú</h2>
+        <ul>
+          <li>
+            <a
+              href="/historias-peruano"
+              class="header-footer-options"
+              title="Historias de fútbol peruano">Historias de fútbol peruano</a
+            >
+          </li>
+          <li>
+            <a
+              href="/historias-internacional"
+              class="header-footer-options"
+              title="Historias de fútbol internacional"
+              >Historias de fútbol internacional</a
+            >
+          </li>
+          <li>
+            <a
+              href="/noticias-peruano"
+              class="header-footer-options"
+              title="Noticias de fútbol peruano">Noticias de fútbol peruano</a
+            >
+          </li>
+          <li>
+            <a
+              href="/noticias-internacional"
+              class="header-footer-options"
+              title="Noticias de fútbol internacional"
+              >Noticias de fútbol internacional</a
+            >
+          </li>
+        </ul>
+      </section>
+
+      <!-- Menú de redes sociales -->
+      <section class="sectionOptions" aria-labelledby="menu-redes">
+        <h2 id="menu-redes" class="underline text-2xl">Redes</h2>
+        <ul>
+          <li class="text-4xl">
+            <a
+              href="https://instagram.com"
+              class="header-footer-options"
+              title="Instagram de Historias de Fútbol"
+              aria-label="Abrir Instagram de Historias de Fútbol"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MdiInstagram />
+            </a>
+          </li>
+          <li class="text-4xl">
+            <a
+              href="https://facebook.com"
+              class="header-footer-options"
+              title="Facebook de Historias de Fútbol"
+              aria-label="Abrir Facebook de Historias de Fútbol"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MdiFacebook />
+            </a>
+          </li>
+          <li class="text-4xl">
+            <a
+              href="https://twitter.com"
+              class="header-footer-options"
+              title="Twitter de Historias de Fútbol"
+              aria-label="Abrir Twitter de Historias de Fútbol"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <MageX />
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Menú de términos y condiciones -->
+      <section class="sectionOptions" aria-labelledby="menu-terminos">
+        <h2 id="menu-terminos" class="underline text-2xl">
+          Términos y condiciones
+        </h2>
+        <ul>
+          <li>
+            <a
+              href="/terminos"
+              class="header-footer-options"
+              title="Ver términos y condiciones">Términos</a
+            >
+          </li>
+          <li>
+            <a
+              href="/privacidad"
+              class="header-footer-options"
+              title="Ver política de privacidad">Política de privacidad</a
+            >
+          </li>
+        </ul>
+      </section>
+      <section class="grid grid-cols-2 gap-4" aria-labelledby="sponsors">
+        <img src="/palabraDeFutbol.png" alt="" class="rounded-full object-cover w-32">
+      </section>
+    </nav>
+  </section>
+
+  <!-- Derechos reservados -->
+  <p class="text-xs font-semibold py-2 italic">
+    © 2024 Historias de Fútbol - Todos los derechos reservados
+  </p>
+</footer>
+<style>
+  .sectionOptions {
+    @apply flex flex-col gap-2;
+  }
+  .sectionOptions ul {
+    @apply flex flex-col items-start justify-center text-base gap-7;
+  }
+</style>

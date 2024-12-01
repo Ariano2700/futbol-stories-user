@@ -1,0 +1,126 @@
+---
+import { MaterialSymbolsArrowForwardIosRounded } from "src/assets";
+import AsideCard from "src/components/AsideCard.astro";
+import AuthorCard from "src/components/AuthorCard.astro";
+import Layout from "src/layouts/Layout.astro";
+import SectionNotesLayout from "src/layouts/SectionNotesLayout.astro";
+import type { NewsI } from "src/interfaces/news/newsInterface";
+
+interface Props {
+  note: NewsI;
+}
+
+const { note } = Astro.props;
+
+// Divide el contenido en segmentos
+const numberOfAds = 2; // Máximo número de anuncios
+const contentBlocks = [...note.content]; // Copiar el contenido
+const segmentLength = Math.ceil(contentBlocks.length / (numberOfAds + 1)); // Divide en segmentos
+
+// Función para procesar el texto y aplicar negritas
+const parseTextWithBold = (text: string) => {
+  const parts = text.split(/\*\*(.*?)\*\*/g); // Divide por texto entre ** **
+  return parts.map((part, index) =>
+    index % 2 === 1 ? <strong>{part}</strong> : part
+  ); // Cierra correctamente el mapa antes del punto y coma
+};
+
+---
+
+<Layout title={`${note.title}`}>
+  <div
+    class="flex flex-col-reverse gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10 mt-36"
+  >
+    <SectionNotesLayout>
+      <header class="flex flex-col gap-5">
+        <div class="flex flex-wrap items-center gap-6">
+          {note.tags.map((tag) => (
+            <div
+              class="bg-primary-25 text-text montserrat-alternates-semibold rounded-full text-xl py-1 px-4"
+            >
+              {tag.name}
+            </div>
+          ))}
+        </div>
+        <h1 class="montserrat-bold text-5xl">{note.title}</h1>
+        <div class="w-full flex items-center justify-between">
+          <h3 class="montserrat-light text-base text-primary-25">
+            {note.updatedAt.toLocaleDateString("es-ES", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}
+          </h3>
+          <h2 class="montserrat-light text-base">
+            Por: <span class="montserrat-bold">{note.author_id}</span>
+          </h2>
+        </div>
+      </header>
+      <section>
+        <figure>
+          <img
+            src={note.images.find((img) => img.mainImage)?.url || ""}
+            alt={`Imagen destacada de ${note.title}`}
+            class="w-full min-w-[300px] max-w-[650px] object-cover rounded-md"
+          />
+          <figcaption>
+            <h4>
+              Fuente:
+              <span class="italic"> {note.principalTag || "No especificada"} </span>
+            </h4>
+          </figcaption>
+        </figure>
+        <div class="mt-5 mb-5 text-lg">
+          {contentBlocks.map((block, index) => (
+            <div>
+              {/* Renderiza el contenido según el tipo */}
+              {block.type === "paragraph" && <p>{parseTextWithBold(block.text)}</p>}
+              {block.type === "citation" && (
+                <blockquote class="pl-4 border-l-4 border-primary-25 italic text-primary-15">
+                  {parseTextWithBold(block.text)}
+                </blockquote>
+              )}
+              {block.type === "list" && (
+                <ul class="list-disc pl-5">
+                  {block.elements.map((item: string) => (
+                    <li>{parseTextWithBold(item)}</li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Agrega un bloque publicitario en los segmentos definidos */}
+              {(index + 1) % segmentLength === 0 && index + 1 < contentBlocks.length && (
+                <div class="bg-[#D9D9D9] w-full h-20 rounded-md mt-5 mb-5"></div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div class="mt-7">
+          <h3 class="montserrat-medium text-xl mb-4">Imágenes relacionadas</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {note.images.map((image, idx) => (
+              <img
+                src={image.url}
+                alt={`Imagen relacionada ${idx + 1}`}
+                class="size-[300px] object-cover"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+      <footer class="flex flex-col gap-10">
+        <AuthorCard authorId={note.author_id} />
+        <button
+          class="bg-primary-5 text-primary-15 hover:bg-primary-15 hover:text-primary-5 p-3 rounded-md montserrat-alternates-medium transition-all duration-300 ease-out text-xl flex items-center justify-center gap-3"
+          aria-label="Volver a la página anterior"
+        >
+          <span class="rotate-180">
+            <MaterialSymbolsArrowForwardIosRounded />
+          </span>
+          Volver
+        </button>
+      </footer>
+    </SectionNotesLayout>
+    <AsideCard />
+  </div>
+</Layout>
