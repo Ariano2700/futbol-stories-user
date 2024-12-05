@@ -1,0 +1,274 @@
+---
+import Layout from "src/layouts/Layout.astro";
+import { LineMdClose, MaterialSymbolsArrowForwardIosRounded } from "src/assets";
+import AuthorCard from "src/components/AuthorCard.astro";
+import SectionNotesLayout from "src/layouts/SectionNotesLayout.astro";
+import type { ImagesNewsI } from "src/interfaces/news/newsInterface";
+import getNoteById from "src/service/getNoteById";
+import type { ContentBlock } from "src/interfaces/news/contentInterfaces";
+import type { TagsI } from "src/interfaces/news/tagsInterface";
+import type { NewsWithAuthorI } from "src/interfaces/news/newsInterface";
+import formatFirebaseTimestamp from "src/utils/formatFirebaseTimestamp";
+import formatName from "src/utils/formatName";
+import formatContent from "src/utils/formatContent";
+import RecommendationsCard from "src/components/RecommendationsCard.tsx";
+import RecommendationsCardMobile from "src/components/RecommendationsCardMobile";
+import MayBeInterested from "src/components/MayBeInterested";
+
+interface Props {
+  noteId: string;
+  createdAt: Date;
+}
+
+// Obtener el ID desde los parámetros de la URL
+const { month, year, title ,id } = Astro.params;
+
+// Obtener los datos de la nota basada en el ID
+const note = (await getNoteById(
+  month || "",
+  year || "",
+  id || ""
+)) as NewsWithAuthorI;
+
+// Divide el contenido en segmentos
+if (!note || !note.content) {
+  throw new Error("Content not found for this note");
+}
+const contentBlocks = note.content as ContentBlock[]; // Copiar el contenido
+const numberOfAds = 2; // Máximo número de anuncios
+const segmentLength = Math.ceil(note.content.length / (numberOfAds + 1)); // Divide en segmentos
+
+
+// Aplicar la función al contenido
+const formattedContentBlocks = formatContent(contentBlocks);
+const middleIndex = Math.floor(formattedContentBlocks.length / 2);
+
+---
+
+<Layout title={`${note.title} | Historias de futbol`}>
+  <div
+    class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10 mt-24"
+  >
+    <SectionNotesLayout idSection={`${title}`}>
+      <article class="w-full">
+       {/* Contenido principal */}
+        <header class="flex flex-col gap-5">
+          <div class="flex flex-wrap items-center gap-6">
+            {
+              note.tags.filter((tag:TagsI) => tag.id === note.principalTag)
+              .map((tag: TagsI) => (
+                <h4 class="bg-primary-25 text-text montserrat-alternates-semibold rounded-full text-xl py-1 px-4">
+                  {tag.name}
+                  </h4>
+            ))
+          }
+          </div>
+        <h1 class="montserrat-bold text-4xl sm:text-5xl">{note.title}</h1>
+        <div class="w-full flex items-center justify-between">
+          <p class="montserrat-regular text-base text-primary-25">
+            {
+              note.updatedAt
+              ? formatFirebaseTimestamp(note.updatedAt)
+              : formatFirebaseTimestamp(note.createdAt)
+            }
+          </p>
+          <p class="montserrat-light text-base">
+            Por: <span class="montserrat-bold uppercase"
+            >{formatName(note.author.name, note.author.surname)}</span
+            >
+          </p>
+        </div>
+      </header>
+
+      {/* Contenido principal */}
+      <section>
+        <figure>
+          <img
+          src={note.images.find((img: ImagesNewsI) => img.mainImage)?.url ||
+              ""}
+            alt={`Imagen destacada de ${note.title}`}
+            class="w-full min-w-[300px] max-w-[650px] object-cover rounded-md"
+            />
+            <figcaption class="montserrat-regular">
+              <h4>
+                Fuente:
+                <span class="italic montserrat-semibold">
+                  {
+                    note.images.find((img: ImagesNewsI) => img.mainImage)
+                    ?.fromOf || "No especificada"
+                  }
+              </span>
+            </h4>
+          </figcaption>
+        </figure>
+
+        <div id="formatted-content" class="mt-5 mb-5 text-lg montserrat-regular">
+          {
+            formattedContentBlocks.map((block, index) => (
+              <div class="flex flex-col">
+                {/* Renderiza el contenido según el tipo */}
+                {block.type === "paragraph" && (
+                  <h2 class="text-2xl montserrat-semibold mt-7 mb-3">{block.title}</h2>
+                  <p set:html={block.text}></p>
+                )}
+                {block.type === "citation" && (
+                  <blockquote set:html={block.text} class="pl-4 border-l-4 mt-2 mb-2 border-primary-25 italic text-primary-15">
+                  </blockquote>
+                )}
+                {block.type === "list" && (
+                  <h3 class={`text-2xl font-bold mt-5 ${note.isPeruvian ? "text-red-600" : "text-blue-600"}`}>{block.title}</h3>
+                  <ul class="list-disc pl-5 mb-5">
+                    {block.elements.map((item: string) => (
+                      <li set:html={item}></li>
+                    ))}
+                  </ul>
+                )}
+
+                {/* Agrega un bloque publicitario en los segmentos definidos */}
+                {(index + 1) % segmentLength === 0 &&
+                  index + 1 < contentBlocks.length && (
+                    <RecommendationsCardMobile recommendationIndex={Math.floor(index / segmentLength)}
+                    principalNote={note} client:load/>
+                  )}
+                        {/* Mostrar el banner de TikTok a la mitad del contenido SOLO en pantallas grandes */}
+                  {index === middleIndex && (
+                    <a
+                    href="https://www.tiktok.com/@palabradefutbol_?lang=es"
+                    target="_blank"
+                    class="flex flex-col gap-2"
+                    rel="noopener noreferrer"
+                    >
+                      <img
+                        src="/palabraDeFutbolHorizontalBanner.png"
+                        alt="Palabra De Futbol Horizontal Banner"
+                        class="mt-5 object-cover w-full max-h-[250px] rounded-lg"
+                        />
+                      <p class="text-slate-400 text-xs sm:text-sm montserrat-medium ml-5">Patrocinador principal: Palabra de futbol.</p>
+                    </a>
+                  )}
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+        <section aria-labelledby="related-images-heading" class="mt-7">
+          <h3 class="montserrat-semibold text-2xl mb-4">Imágenes relacionadas</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 place-items-center" id="related-images">
+            {
+              note.images.map((image: ImagesNewsI, idx: number) => (
+                <img
+                src={image.url}
+                alt={`Imagen relacionada ${idx + 1}`}
+                class="size-[300px] object-cover cursor-pointer"
+                data-src={image.url}
+                data-source={image.fromOf || "Fuente desconocida"}
+                />
+              ))
+            }
+          </div>
+          <!-- Modal -->
+          <div
+          id="image-modal"
+          class="hidden fixed top-0 left-0 right-0 bottom-0 w-full h-full bg-black/90 items-center justify-center z-50"
+          >
+          <div class="relative bg-white p-4 rounded shadow-lg max-w-[80%] max-h-[80%] flex flex-col items-center justify-center">
+            <img id="modal-image" class="object-contain sm:max-w-[1000px] sm:max-h-[700px]" />
+            <p id="modal-source" class="text-black text-lg mt-2 text-center montserrat-bold"></p>
+            <button
+            id="close-modal"
+            class="absolute top-2 right-2 text-white bg-red-500 rounded-full p-2 transition-all duration-200 ease-in-out hover:bg-red-600"
+            >
+            <LineMdClose />
+          </button>
+          </div>
+        </div>
+        </section>
+</article>
+      {/* Footer */}
+      <footer class="flex flex-col gap-10">
+        <MayBeInterested principalNote={note} client:load/>
+        <AuthorCard author={note.author}/>
+        <section>
+            <!-- Título principal -->
+          <div>
+            <h3 id="author-title" class="montserrat-semibold uppercase">
+              Tags relacionados
+            </h3>
+            <hr class="border border-black mb-5" />
+          </div>
+          <div class="flex flex-wrap items-center gap-6">
+          {
+            note.tags.filter((tag:TagsI) => tag.id !== note.principalTag)
+            .map((tag: TagsI) => (
+              <h4 class="bg-primary-25 text-text montserrat-alternates-semibold rounded-full text-sm py-1 px-4">
+                  {tag.name}
+                  </h4>
+            ))
+          }
+          </div>
+        </section>
+        <button
+          id="btnWindowBack"
+          class="bg-primary-5 text-primary-15 hover:bg-primary-15 hover:text-primary-5 p-3 rounded-md montserrat-alternates-medium transition-all duration-300 ease-out text-xl flex items-center justify-center gap-3"
+          aria-label="Volver a la página anterior"
+        >
+          <span class="rotate-180">
+            <MaterialSymbolsArrowForwardIosRounded />
+          </span>
+          Volver
+        </button>
+      </footer>
+    </SectionNotesLayout>
+    <aside>
+      <RecommendationsCard principalNote={note} client:load/>
+    </aside>
+  </div>
+</Layout>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const images = document.querySelectorAll("#related-images img");
+    const modal = document.getElementById("image-modal");
+    const modalImage = document.getElementById("modal-image") as HTMLImageElement;
+    const modalSource = document.getElementById("modal-source");
+    const closeModal = document.getElementById("close-modal");
+    const btnWindowBack = document.getElementById("btnWindowBack");
+
+    // Verifica si todos los elementos existen
+    if (!modal || !modalImage || !modalSource || !closeModal || !btnWindowBack) {
+      console.error("Uno o más elementos del DOM no se encontraron");
+      return;
+    }
+    //Retroceder la pagina
+    btnWindowBack.addEventListener("click", () => {
+      window.history.back()
+    })
+
+    // Abre el modal al hacer clic en una imagen
+    images.forEach((img) => {
+      img.addEventListener("click", () => {
+        const src = img.getAttribute("data-src");
+        const source = img.getAttribute("data-source");
+
+        if (src) modalImage.src = src; // Actualiza la imagen si existe la URL
+        modalSource.textContent = `Fuente: ${source || "No especificada"}`;
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      });
+    });
+
+    // Cierra el modal
+    const closeModalHandler = () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      modalImage.src = ""; // Limpia la imagen para optimizar memoria
+    };
+
+    closeModal.addEventListener("click", closeModalHandler);
+    modal.addEventListener("click", closeModalHandler); // Cierra al hacer clic fuera
+    modal
+      .querySelector("div")
+      ?.addEventListener("click", (e) => e.stopPropagation()); // Previene cierre al hacer clic dentro del modal
+  });
+</script>
+

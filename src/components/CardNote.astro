@@ -1,6 +1,9 @@
 ---
 import type { NewsI } from "src/interfaces/news/newsInterface";
+import convertCreatedAtToMonthYear from "src/utils/convertCreatedAtToMonthYear";
 import formatFirebaseTimestamp from "src/utils/formatFirebaseTimestamp";
+import formatTitleForUrl from "src/utils/formatTitleForUrl";
+
 
 interface Props {
   note: NewsI;
@@ -9,38 +12,51 @@ interface Props {
 const { note } = Astro.props;
 // Encuentra el tag que coincide con el principalTag
 const principalTag = note.tags.find((tag) => tag.id === note.principalTag);
+const { month, year } = convertCreatedAtToMonthYear(note.createdAt);
 ---
 
-<div
+<a
+  href={`/notas/${month}/${year}/${formatTitleForUrl(note.title)}/${note.id}`}
   class="relative flex flex-col gap-2 w-[300px] hover:scale-105 transition-all duration-200 ease-in-out"
+  aria-label={`Ver más sobre ${note.title}`}
 >
+  <!-- Etiqueta de ubicación (Perú o Internacional) -->
   <div class="absolute top-0 left-0 w-full">
     <div class="flex items-center justify-between p-5">
-      <div
-        class={`${note.isPeruvian ? "bg-red-600" : "bg-blue-600"}  text-text montserrat-alternates-semibold rounded-full text-sm py-1 px-4`}
+      <span
+        class={`${note.isPeruvian ? "bg-red-600" : "bg-blue-600"} text-text montserrat-alternates-semibold rounded-full text-sm py-1 px-4`}
+        aria-label={`Nota de ${note.isPeruvian ? "Perú" : "Internacional"}`}
       >
         {note.isPeruvian ? "Perú" : "Int."}
-      </div>
-      <img
-        src={principalTag ? principalTag.image : null}
-        alt={`Logo o escudo oficial de ${principalTag ? principalTag.name : null}`}
-        class="size-16 object-contain"
-      />
+      </span>
+      {
+        principalTag && (
+          <img
+            src={principalTag.image}
+            alt={`Logo o escudo oficial de ${principalTag.name}`}
+            class="size-16 object-contain"
+          />
+        )
+      }
     </div>
   </div>
+
+  <!-- Imagen destacada -->
   <img
     src={note.images.find((img) => img.mainImage)?.url || ""}
     alt={`Imagen destacada de ${note.title}`}
     class="size-[300px] object-cover rounded-sm"
   />
+
+  <!-- Información textual -->
   <div class="flex flex-col gap-1">
-    <p class="text-sm text-red-500 max-w-56 montserrat-light">
+    <time class="text-sm text-red-500 max-w-56 montserrat-light">
       {
         note.updatedAt
           ? formatFirebaseTimestamp(note.updatedAt)
           : formatFirebaseTimestamp(note.createdAt)
       }
-    </p>
+    </time>
     <p class="max-w-[280px] text-xl montserrat-semibold">{note.title}</p>
   </div>
-</div>
+</a>

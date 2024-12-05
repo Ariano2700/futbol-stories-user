@@ -54,7 +54,7 @@ const { author } = Astro.props;
         <h4 class="montserrat-semibold text-2xl">Redes</h4>
         <div class="flex gap-5 text-text text-3xl">
           {
-            author.networks.map((networkItem) => {
+            author.networks ? (author.networks.map((networkItem) => {
               const { network, url } = networkItem;
 
               // Asignar clases e íconos dinámicamente según la red
@@ -104,7 +104,7 @@ const { author } = Astro.props;
                   {config.icon}
                 </a>
               );
-            })
+            })) : "No hay redes disponibles"
           }
         </div>
       </div>

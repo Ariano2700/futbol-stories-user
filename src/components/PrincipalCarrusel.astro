@@ -1,6 +1,8 @@
 ---
-import { MaterialSymbolsArrowForwardIosRounded } from "src/assets";
 import type { NewsI } from "src/interfaces/news/newsInterface";
+import { MaterialSymbolsArrowForwardIosRounded } from "src/assets";
+import convertCreatedAtToMonthYear from "src/utils/convertCreatedAtToMonthYear";
+import formatTitleForUrl from "src/utils/formatTitleForUrl";
 
 interface Props {
   notes: NewsI[];
@@ -14,7 +16,9 @@ const { notes } = Astro.props;
   <div class="relative overflow-hidden flex items-center" data-notes={JSON.stringify(notes)}>
     <div id="carouselSlides" class="flex transition-transform duration-500">
       {
-        notes.map((note, i) => (
+        notes.map((note) => {
+          const {month,year} = convertCreatedAtToMonthYear(note.createdAt)
+          return(
           <figure class="relative min-w-full overflow-hidden">
             <img
               src={note.images.find((img) => img.mainImage)?.url || ""}
@@ -47,7 +51,7 @@ const { notes } = Astro.props;
               </div>
 
               <a
-                href={note.isStory ? `/historias/${note.id}` : `/noticias/${note.id}`}
+                href={`notas/${month}/${year}/${formatTitleForUrl(note.title)}/${note.id}`}
                 class="bg-primary-5 text-primary-15 hover:bg-primary-15 hover:text-primary-5 p-3 rounded-md montserrat-alternates-medium transition-all duration-300 ease-out text-xl"
                 aria-label="Ver historia completa de Universitario Bicampeón"
               >
@@ -55,7 +59,8 @@ const { notes } = Astro.props;
               </a>
             </figcaption>
           </figure>
-        ))
+        )
+        })
       }
     </div>
   </div>

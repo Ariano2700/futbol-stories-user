@@ -9,6 +9,8 @@
       "@store": ["/src/store"],
       "@interfaces": ["/src/interfaces"],
       "@styles": ["/src/styles"]
-    }
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
   }
 }

@@ -1,7 +1,10 @@
 ---
-
+interface Props {
+  idSection:string
+}
+const {idSection} = Astro.props
 ---
 
-<section class="bg-white rounded-lg p-8 flex flex-col gap-7 w-full min-w-[350px] lg:max-w-[1000px]">
+<section id={idSection} class="bg-white rounded-lg p-8 flex flex-col gap-7 w-full min-w-[350px] lg:w-full">
   <slot />
 </section>

@@ -15,6 +15,9 @@ const data = await res.json();
 const stories = data.stories.slice(0, 3); // Tomar solo las primeras 3 historias
 const news = data.news.slice(0, 2); // Tomar solo las primeras 2 noticias
 
+const storiesSection = data.stories.slice(0, 9); // Tomar solo las primeras 3 historias
+const newsSection = data.news.slice(0, 9); // Tomar solo las primeras 2 noticias
+
 // Mezclar las notas en el orden requerido
 const latestNotes = [];
 for (let i = 0; i < 3; i++) {
@@ -29,13 +32,13 @@ for (let i = 0; i < 3; i++) {
   <div
     class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10"
   >
-    <SectionNotes notes={stories} title="Historias" />
+    <SectionNotes notes={storiesSection} firstTitle="Historias" futbolTextColor/>
     <AsideCard />
   </div>
   <div
     class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10"
   >
-    <SectionNotes notes={news} title="Noticias" />
+    <SectionNotes notes={newsSection} firstTitle="Noticias" futbolTextColor/>
     <AsideCard />
   </div>
 </Layout>

@@ -1,4 +1,4 @@
-import { tagsEndpointI } from "../interfaces/tagsEndpointsInterface";
+import type { tagsEndpointI } from "../interfaces/tagsEndpointsInterface";
 
 const tagsEndpoints: tagsEndpointI = {
   createTagEndpoint: () => "/api/news/tags/create",

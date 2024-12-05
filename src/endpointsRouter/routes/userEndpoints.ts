@@ -1,4 +1,4 @@
-import { userEndpointI } from "../interfaces/userEndpointsInterface";
+import type { userEndpointI } from "../interfaces/userEndpointsInterface";
 
 const userEndpoints: userEndpointI = {
   getAllUsersEndpoint: () => "/api/user/get/all",

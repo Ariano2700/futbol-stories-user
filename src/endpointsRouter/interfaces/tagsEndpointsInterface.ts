@@ -1,4 +1,4 @@
-import { DynamicEndpoint } from "./DynamicEndpointInterface";
+import type { DynamicEndpoint } from "./DynamicEndpointInterface";
 
 export interface tagsEndpointI {
   createTagEndpoint: () => string;

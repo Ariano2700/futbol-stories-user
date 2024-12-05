@@ -1,0 +1,36 @@
+---
+import SectionNotes from "src/components/SectionNotes.astro";
+import Layout from "../../layouts/Layout.astro";
+import PrincipalCarrusel from "src/components/PrincipalCarrusel.astro";
+import AsideCard from "src/components/AsideCard.astro";
+import { newsEndpoints } from "src/endpointsRouter";
+import type { NewsI } from "src/interfaces/news/newsInterface";
+
+const apiUrl = `${
+  import.meta.env.API_URL
+}${newsEndpoints.getLatestNotesEndpoint()}`;
+const res = await fetch(apiUrl);
+const data = await res.json();
+
+// Separar stories y news del backend
+const stories = data.stories.slice(0, 5); // Tomar solo las primeras 3 historias
+const peruvianStories = data.stories.filter((pstorie:NewsI) => pstorie.isPeruvian === true)
+const internationalStories = data.stories.filter((pstorie:NewsI) => pstorie.isPeruvian === false)
+---
+
+<Layout title="Historias de futbol">
+  <PrincipalCarrusel notes={stories} />
+
+  <div
+    class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10"
+  >
+    <SectionNotes notes={peruvianStories} firstTitle="Historias" futbolTextColor={false} secondTitle="peruano" secondTitleColor="text-red-500" />
+    <AsideCard />
+  </div>
+  <div
+    class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10"
+  >
+    <SectionNotes notes={internationalStories} firstTitle="Historias" futbolTextColor={false} secondTitle="internacional" secondTitleColor="text-blue-500"/>
+    <AsideCard />
+  </div>
+</Layout>

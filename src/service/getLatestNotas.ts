@@ -1,7 +1,7 @@
 import { newsEndpoints } from "src/endpointsRouter";
-import type { NewsI } from "src/interfaces/news/newsInterface";
+import type { DataI } from "src/interfaces/responses/LatestNotesDataI";
 
-export const fetchLatestNotas = async () => {
+export const getLatestNotas = async () => {
   const apiUrl = `${
     import.meta.env.API_URL
   }${newsEndpoints.getLatestNotesEndpoint()}`;
@@ -12,10 +12,9 @@ export const fetchLatestNotas = async () => {
         throw new Error(`Error en la API: ${res.status} ${res.statusText}`);
       }
       const data = await res.json();
-      if (!data?.notes) {
-        throw new Error("Estructura inesperada en la respuesta de la API.");
-      }
-      return data.notes as NewsI[];
+      const { stories = [], news = [] }: DataI = await res.json();
+
+      return { stories, news };
     } catch (error) {
       console.error(error);
       throw error;
