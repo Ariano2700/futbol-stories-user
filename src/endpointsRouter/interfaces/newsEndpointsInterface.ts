@@ -6,9 +6,10 @@ export interface NewsEndpointI {
   deleteNotesEndpoint: DynamicEndpoint;
   patchNotesEndpoint: DynamicEndpoint;
   getNoteEndpoint: DynamicEndpoint;
-  getAllTNotesEndpoint: DynamicEndpoint; 
-  getInternationalNoteEndpoint: DynamicEndpoint; 
+  getAllTNotesEndpoint: DynamicEndpoint;
+  getInternationalNoteEndpoint: DynamicEndpoint;
   getPeruvianNoteEndpoint: DynamicEndpoint;
   getRecommendationsNotesEndpoint: DynamicEndpoint;
-  getLatestNotesEndpoint:DynamicEndpoint;
+  getNotesByTagEndpoint: DynamicEndpoint;
+  getLatestNotesEndpoint: () => string;
 }

@@ -18,7 +18,7 @@ const peruvianStories = data.stories.filter((pstorie:NewsI) => pstorie.isPeruvia
 const internationalStories = data.stories.filter((pstorie:NewsI) => pstorie.isPeruvian === false)
 ---
 
-<Layout title="Historias de futbol">
+<Layout title="Historias | Historias de Fútbol">
   <PrincipalCarrusel notes={stories} />
 
   <div
@@ -31,6 +31,5 @@ const internationalStories = data.stories.filter((pstorie:NewsI) => pstorie.isPe
     class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10"
   >
     <SectionNotes notes={internationalStories} firstTitle="Historias" futbolTextColor={false} secondTitle="internacional" secondTitleColor="text-blue-500"/>
-    <AsideCard />
   </div>
 </Layout>

@@ -3,68 +3,28 @@ import { MageX, MdiFacebook, MdiInstagram } from "src/assets";
 ---
 
 <footer
-  class="bg-background-footer/50 py-2 flex flex-col items-center justify-center text-text"
+  class="bg-background-footer/50 relative py-2 flex flex-col items-center justify-center text-text"
   aria-label="Pie de página de Historias de Fútbol"
 >
   <!-- Sección principal del footer -->
   <section
-    class="p-4 flex flex-col xl:flex-row items-center justify-around gap-5 w-full"
+    class="p-4 flex flex-col xl:flex-row items-center justify-around gap-5"
   >
-    <!-- Logotipo -->
-    <a href="/" aria-label="Ir a la página principal de Historias de Fútbol">
-      <img
-        src="/logotipo.png"
-        alt="Logotipo de Historias de Fútbol"
-        class="w-48 hover:scale-105 duration-200 transition-all"
-      />
-    </a>
-
-    <!-- Navegación del footer -->
-    <nav
-      class="flex flex-col gap-5 sm:grid sm:grid-cols-3 sm:gap-8 sm:place-content-center md:flex md:flex-row md:gap-8 md:items-start w-4/5 xl:w-1/2"
-      aria-label="Menú de navegación en el pie de página"
-    >
-      <!-- Menú de categorías -->
-      <section class="sectionOptions" aria-labelledby="menu-categorias">
-        <h2 id="menu-categorias" class="underline text-2xl">Menú</h2>
-        <ul>
-          <li>
-            <a
-              href="/historias#Historias-peruano"
-              class="header-footer-options"
-              title="Historias de fútbol peruano">Historias de fútbol peruano</a
-            >
-          </li>
-          <li>
-            <a
-              href="/historias#Historias-internacional"
-              class="header-footer-options"
-              title="Historias de fútbol internacional"
-              >Historias de fútbol internacional</a
-            >
-          </li>
-          <li>
-            <a
-              href="/noticias#Noticias-peruano"
-              class="header-footer-options"
-              title="Noticias de fútbol peruano">Noticias de fútbol peruano</a
-            >
-          </li>
-          <li>
-            <a
-              href="/noticias#Noticias-internacional"
-              class="header-footer-options"
-              title="Noticias de fútbol internacional"
-              >Noticias de fútbol internacional</a
-            >
-          </li>
-        </ul>
-      </section>
-
+    <div class="flex flex-col justify-center">
+      <!-- Logotipo -->
+      <a href="/" aria-label="Ir a la página principal de Historias de Fútbol">
+        <img
+          src="/logotipo.png"
+          alt="Logotipo de Historias de Fútbol"
+          class="w-48 hover:scale-105 duration-200 transition-all"
+        />
+      </a>
       <!-- Menú de redes sociales -->
       <section class="sectionOptions" aria-labelledby="menu-redes">
-        <h2 id="menu-redes" class="underline text-2xl">Redes</h2>
-        <ul>
+        <h2 id="menu-redes" class="montserrat-semibold text-xl">
+          Nuestras redes:
+        </h2>
+        <ul class="flex items-center gap-5">
           <li class="text-4xl">
             <a
               href="https://instagram.com"
@@ -103,13 +63,55 @@ import { MageX, MdiFacebook, MdiInstagram } from "src/assets";
           </li>
         </ul>
       </section>
+    </div>
+    <!-- Navegación del footer -->
+    <nav
+      class="h-full flex flex-col gap-5 sm:grid sm:grid-cols-3 sm:gap-8 sm:place-content-center md:flex md:flex-row md:gap-20 md:items-start w-4/5 xl:w-1/2"
+      aria-label="Menú de navegación en el pie de página"
+    >
+      <!-- Menú de categorías -->
+      <section class="sectionOptions" aria-labelledby="menu-categorias">
+        <h2 id="menu-categorias" class="montserrat-semibold text-xl">
+          Secciones
+        </h2>
+        <ul class="montserrat-alternates-medium text-lg flex flex-col gap-3">
+          <li>
+            <a
+              href="/historias#Historias-peruano"
+              class="header-footer-options"
+              title="Historias de fútbol peruano">Historias de fútbol peruano</a
+            >
+          </li>
+          <li>
+            <a
+              href="/historias#Historias-internacional"
+              class="header-footer-options"
+              title="Historias de fútbol internacional"
+              >Historias de fútbol internacional</a
+            >
+          </li>
+          <li>
+            <a
+              href="/noticias#Noticias-peruano"
+              class="header-footer-options"
+              title="Noticias de fútbol peruano">Noticias de fútbol peruano</a
+            >
+          </li>
+          <li>
+            <a
+              href="/noticias#Noticias-internacional"
+              class="header-footer-options"
+              title="Noticias de fútbol internacional"
+              >Noticias de fútbol internacional</a
+            >
+          </li>
+        </ul>
+      </section>
 
       <!-- Menú de términos y condiciones -->
       <section class="sectionOptions" aria-labelledby="menu-terminos">
-        <h2 id="menu-terminos" class="underline text-2xl">
-          Términos y condiciones
-        </h2>
-        <ul>
+        <h2 id="menu-terminos" class="montserrat-semibold text-xl">Legales</h2>
+        <ul class="montserrat-alternates-medium text-lg flex flex-col gap-3">
           <li>
             <a
               href="/terminos"
@@ -127,21 +129,30 @@ import { MageX, MdiFacebook, MdiInstagram } from "src/assets";
         </ul>
       </section>
       <section class="grid grid-cols-2 gap-4" aria-labelledby="sponsors">
-        <img src="/palabraDeFutbol.png" alt="" class="rounded-full object-cover w-32">
+        <img
+          src="/palabraDeFutbol.png"
+          alt=""
+          class="rounded-full object-cover w-32"
+        />
       </section>
     </nav>
   </section>
 
   <!-- Derechos reservados -->
-  <p class="text-xs font-semibold py-2 italic">
+  <hr class="w-4/5 bg-white" />
+  <p class="text-base text-center p-2 montserrat-semibold py-2 uppercase">
     © 2024 Historias de Fútbol - Todos los derechos reservados
   </p>
 </footer>
 <style>
   .sectionOptions {
-    @apply flex flex-col gap-2;
+    @apply flex flex-col items-center justify-center gap-2;
   }
-  .sectionOptions ul {
-    @apply flex flex-col items-start justify-center text-base gap-7;
+  footer {
+    background-image: url("/trofeoLiga1Footer.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: darken;
   }
 </style>

@@ -1,12 +1,12 @@
 export type ContentBlock = Paragraph | Citation | List;
 
-interface Paragraph {
+export interface Paragraph {
   type: "paragraph";
   title?: string;
   text: string; // Texto del párrafo
 }
 
-interface Citation {
+export interface Citation {
   type: "citation";
   text: string; // Texto de la cita
   author?: string; // Opcional: Autor de la cita

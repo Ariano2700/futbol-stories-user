@@ -16,6 +16,7 @@ const newsEndpoints: NewsEndpointI = {
     `/api/news/note/get/international?month=${month}&year=${year}&lastId=${lastId}&limit=${limit}`,
   getPeruvianNoteEndpoint: (month, year, lastId, limit) =>
     `/api/news/note/get/peru?month=${month}&year=${year}&lastId=${lastId}&limit=${limit}`,
+  getNotesByTagEndpoint: (id) => `/api/news/note/get/byTag/${id}`,  
   getLatestNotesEndpoint: () => `/api/news/note/get/latest`,
 };
 

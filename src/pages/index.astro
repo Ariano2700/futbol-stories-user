@@ -26,19 +26,22 @@ for (let i = 0; i < 3; i++) {
 }
 ---
 
-<Layout title="Historias de futbol">
+<Layout title="Historias de Fútbol | Noticias, Historias y Análisis">
   <PrincipalCarrusel notes={latestNotes} />
 
   <div
     class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10"
   >
-    <SectionNotes notes={storiesSection} firstTitle="Historias" futbolTextColor/>
+    <SectionNotes
+      notes={storiesSection}
+      firstTitle="Historias"
+      futbolTextColor
+    />
     <AsideCard />
   </div>
   <div
     class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10"
   >
-    <SectionNotes notes={newsSection} firstTitle="Noticias" futbolTextColor/>
-    <AsideCard />
+    <SectionNotes notes={newsSection} firstTitle="Noticias" futbolTextColor />
   </div>
 </Layout>

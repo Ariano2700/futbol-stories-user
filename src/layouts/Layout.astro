@@ -12,13 +12,85 @@ const { title } = Astro.props;
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Configuración básica -->
     <meta charset="UTF-8" />
-    <meta name="description" content="Astro description" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="ico" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Descubre historias y noticias más recientes de fútbol peruano y mundial. Análisis, historias y mucho más en un solo lugar."
+    />
+    <meta name="language" content="es" />
+    <meta name="author" content="Historias de Fútbol" />
+    <meta
+      name="keywords"
+      content="fútbol, fútbol peruano, análisis de fútbol, noticias de fútbol, historias de fútbol, fútbol mundial, Copa Libertadores, Liga 1, Liga 2, selección peruana, jugadores de fútbol, equipos de fútbol, estadios de fútbol, historia del fútbol, torneos de fútbol, resultados de fútbol, tabla de posiciones, entrenadores de fútbol, tácticas de fútbol, análisis táctico, goles, mejores jugadas, fútbol sudamericano, fútbol europeo, Champions League, Europa League, Mundial de Fútbol, curiosidades de fútbol, leyendas del fútbol, Universitario de Deportes, Alianza Lima, Sporting Cristal, fútbol femenino, entrevistas de fútbol, crónicas de fútbol, fútbol juvenil, promesas del fútbol, árbitros de fútbol, rivalidades en el fútbol, datos curiosos de fútbol, fútbol y cultura, economía del fútbol, marketing deportivo, tecnología en el fútbol"
+    />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="robots" content="index, follow" />
     <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content={title} />
+    <meta
+      property="og:description"
+      content="Descubre las historias y noticias más recientes sobre fútbol peruano y mundial."
+    />
+    <meta property="og:image" content="/default-og-image.jpg" />
+    <meta
+      property="og:image:alt"
+      content="Imagen representativa de las historias de fútbol."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:site_name" content="Historias de Fútbol" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta
+      name="twitter:description"
+      content="Descubre historias y noticias de fútbol mundial."
+    />
+    <meta name="twitter:image" content="/default-twitter-image.jpg" />
+    <meta
+      name="twitter:image:alt"
+      content="Imagen representativa de historias de fútbol."
+    />
+    <meta name="twitter:site" content="@tuCuentaTwitter" />
+    <meta name="twitter:creator" content="@tuCuentaTwitter" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href={Astro.url.href} />
+
+    <!-- JSON-LD para estructurar datos -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://tusitio.com",
+        "name": "Historias de Fútbol",
+        "description": "Descubre historias y noticias más recientes de fútbol peruano y mundial. Análisis, historias y mucho más en un solo lugar.",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Historias de Fútbol",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "/logo.png"
+          }
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://tusitio.com/buscar?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
+    <!-- Título dinámico -->
     <title>{title}</title>
   </head>
+
   <body class={`h-screen flex flex-col bg-background ${fonts}`}>
     <Header />
     <main class="flex-grow">

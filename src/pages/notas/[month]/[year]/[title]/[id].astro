@@ -14,6 +14,7 @@ import formatContent from "src/utils/formatContent";
 import RecommendationsCard from "src/components/RecommendationsCard.tsx";
 import RecommendationsCardMobile from "src/components/RecommendationsCardMobile";
 import MayBeInterested from "src/components/MayBeInterested";
+import formatTitleForUrl from "src/utils/formatTitleForUrl";
 
 interface Props {
   noteId: string;
@@ -42,10 +43,9 @@ const segmentLength = Math.ceil(note.content.length / (numberOfAds + 1)); // Div
 // Aplicar la función al contenido
 const formattedContentBlocks = formatContent(contentBlocks);
 const middleIndex = Math.floor(formattedContentBlocks.length / 2);
-
 ---
 
-<Layout title={`${note.title} | Historias de futbol`}>
+<Layout title={`${note.title} | Historias de Fútbol`}>
   <div
     class="flex flex-col gap-5 lg:flex-row items-center lg:items-start justify-around w-full px-14 py-10 mt-24"
   >
@@ -57,9 +57,9 @@ const middleIndex = Math.floor(formattedContentBlocks.length / 2);
             {
               note.tags.filter((tag:TagsI) => tag.id === note.principalTag)
               .map((tag: TagsI) => (
-                <h4 class="bg-primary-25 text-text montserrat-alternates-semibold rounded-full text-xl py-1 px-4">
+                <a href={`/tag/${formatTitleForUrl(tag.name)}/${tag.id}`} class="bg-primary-25 hover:bg-red-700 transition-all ease-in-out duration-200 text-text montserrat-alternates-semibold rounded-full text-xl py-1 px-4">
                   {tag.name}
-                  </h4>
+                  </a>
             ))
           }
           </div>
@@ -199,11 +199,12 @@ const middleIndex = Math.floor(formattedContentBlocks.length / 2);
           </div>
           <div class="flex flex-wrap items-center gap-6">
           {
-            note.tags.filter((tag:TagsI) => tag.id !== note.principalTag)
+            // filter((tag:TagsI) => tag.id !== note.principalTag)
+            note.tags
             .map((tag: TagsI) => (
-              <h4 class="bg-primary-25 text-text montserrat-alternates-semibold rounded-full text-sm py-1 px-4">
+              <a href={`/tag/${formatTitleForUrl(tag.name)}/${tag.id}`} class="bg-primary-25 hover:bg-red-700 transition-all ease-in-out duration-200 text-text montserrat-alternates-semibold rounded-full text-sm py-1 px-4">
                   {tag.name}
-                  </h4>
+                  </a>
             ))
           }
           </div>
